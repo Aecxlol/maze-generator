@@ -121,7 +121,6 @@ class Maze {
     getDirectionAvailable = () => {
 
         if (this.currentPos.x === 0 && this.currentPos.y === 0) {
-            console.log(this.visitedCell[this.currentPos.x - 1][this.currentPos.y]);
             if (this.visitedCell[this.currentPos.x + 1][this.currentPos.y] === false) {
                 this.directionAvailable.bottom = true;
             }
