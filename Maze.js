@@ -298,10 +298,9 @@ class Maze {
 
                 // if there is no direction available
                 if (this.directionAvailable.bottom === false && this.directionAvailable.top === false && this.directionAvailable.left === false && this.directionAvailable.right === false) {
-                    setTimeout(() => {
+                        clearTimeout(this.to);
                         // redo the whole method and this will get the previous position of the previous position etc
                         this.setDirectionToGo();
-                    }, 5);
                 } else {
                     atLeastOneDirectionIsAvailable = true;
                 }
