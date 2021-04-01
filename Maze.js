@@ -79,7 +79,7 @@ class Maze {
         this.paraTimeTaken.textContent = '';
     }
 
-    dNA = () => {
+    initDepartureAndArrival = () => {
         this.ctx.font = "20px Arial";
         this.ctx.fillText("D", 8, 22);
 
@@ -121,6 +121,7 @@ class Maze {
     getDirectionAvailable = () => {
 
         if (this.currentPos.x === 0 && this.currentPos.y === 0) {
+            console.log(this.visitedCell[this.currentPos.x - 1][this.currentPos.y]);
             if (this.visitedCell[this.currentPos.x + 1][this.currentPos.y] === false) {
                 this.directionAvailable.bottom = true;
             }
@@ -242,7 +243,7 @@ class Maze {
         this.cursorPositionHistoric = this.positionHistoric.x.length - 1;
 
         this.drawCursor();
-        this.dNA();
+        this.initDepartureAndArrival();
         this.resetDirectionAvailable();
         this.getDirectionAvailable();
         this.setDirectionToGo();
@@ -310,8 +311,9 @@ class Maze {
                 this.ending    = new Date();
                 this.timeTaken = this.ending - this.starting;
                 this.enableGenerateButton();
-                this.dNA();
+                this.initDepartureAndArrival();
                 this.showTimeTaken();
+                this.removeLastCursor();
             }
         }
 
@@ -355,14 +357,17 @@ class Maze {
             }
         }
 
-        // update of the current position
-        this.currentPos.x += DIRECTION_MATRIX[this.directionToGo].x;
-        this.currentPos.y += DIRECTION_MATRIX[this.directionToGo].y;
+        if (DIRECTION_MATRIX[this.directionToGo]) {
+            // update of the current position
+            this.currentPos.x += DIRECTION_MATRIX[this.directionToGo].x;
+            this.currentPos.y += DIRECTION_MATRIX[this.directionToGo].y;
 
-        // update of the cells that have been visited
-        this.visitedCell[this.currentPos.x][this.currentPos.y] = true;
 
-        this.clearEdge();
+            // update of the cells that have been visited
+            this.visitedCell[this.currentPos.x][this.currentPos.y] = true;
+
+            this.clearEdge();
+        }
     }
 
     clearEdge = () => {
@@ -417,6 +422,10 @@ class Maze {
 
     showTimeTaken = () => {
         this.paraTimeTaken.textContent = `Le labyrinthe a été généré en ${this.timeTaken / 1000} secondes`;
+    }
+
+    removeLastCursor = () => {
+        this.ctx.clearRect((this.positionHistoric.y[this.positionHistoric.y.length - 1] * this.cellSize) + 2, (this.positionHistoric.x[this.positionHistoric.x.length - 1] * this.cellSize) + 2, 26, 26);
     }
 }
 
