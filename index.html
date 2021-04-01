@@ -7,6 +7,7 @@
     <script src="app.js" defer></script>
     <script src="Maze.js" defer></script>
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
     <title>Maze generator</title>
 </head>
 <body>
@@ -28,7 +29,14 @@
         <em>*100 veut dire que le curseur ira de case en case à une vitesse de 100millisecondes</em>
         <br />
         <br />
-        <button id="generate">Générer</button>
+        <div class="gen-parent">
+            <button id="generate">Générer</button>
+            <div class="fa-1x loader">
+                <i class="fas fa-sync fa-spin"></i>
+            </div>
+        </div>
+        <br />
+        <p class="time-taken"></p>
     </form>
 </body>
 </html>

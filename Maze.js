@@ -1,7 +1,10 @@
 class Maze {
     constructor(nbRow, nbCol, speed) {
-        this.canvas = document.getElementById('canvas');
-        this.ctx    = this.canvas.getContext('2d');
+        this.canvas         = document.getElementById('canvas');
+        this.ctx            = this.canvas.getContext('2d');
+        this.generateButton = document.getElementById('generate');
+        this.loader         = document.querySelector('.loader');
+        this.paraTimeTaken  = document.querySelector('.time-taken');
 
         this.nbRow                  = nbRow;
         this.nbCol                  = nbCol;
@@ -10,6 +13,11 @@ class Maze {
         this.cursorPositionHistoric = null;
         this.cursor                 = 0;
         this.to                     = null;
+
+        this.starting  = new Date();
+        this.ending    = null;
+        this.timeTaken = null;
+
 
         if (!speed) {
             this.speed = 100;
@@ -44,6 +52,8 @@ class Maze {
         this.initCanvasSize();
         this.initMaze();
         this.initMazeMatrix();
+        this.initParaTimeTaken();
+        this.disableGenerateButton();
     }
 
     initCanvasSize = () => {
@@ -63,6 +73,10 @@ class Maze {
             this.ctx.lineTo(this.canvas.width, j * this.cellSize);
             this.ctx.stroke();
         }
+    }
+
+    initParaTimeTaken = () => {
+        this.paraTimeTaken.textContent = '';
     }
 
     dNA = () => {
@@ -293,7 +307,11 @@ class Maze {
                 }
             } else {
                 clearTimeout(this.to);
+                this.ending    = new Date();
+                this.timeTaken = this.ending - this.starting;
+                this.enableGenerateButton();
                 this.dNA();
+                this.showTimeTaken();
             }
         }
 
@@ -374,7 +392,6 @@ class Maze {
     }
 
 
-
     resetDirectionAvailable = () => {
         this.directionAvailable = {
             top: false,
@@ -382,6 +399,24 @@ class Maze {
             right: false,
             left: false
         }
+    }
+
+    disableGenerateButton = () => {
+        this.generateButton.setAttribute("disabled", "");
+        this.generateButton.classList.add("working");
+        this.generateButton.textContent = "Génération en cours ...";
+        this.loader.classList.add('active');
+    }
+
+    enableGenerateButton = () => {
+        this.generateButton.removeAttribute("disabled");
+        this.generateButton.classList.remove("working");
+        this.generateButton.textContent = "Générer";
+        this.loader.classList.remove('active');
+    }
+
+    showTimeTaken = () => {
+        this.paraTimeTaken.textContent = `Le labyrinthe a été généré en ${this.timeTaken / 1000} secondes`;
     }
 }
 
